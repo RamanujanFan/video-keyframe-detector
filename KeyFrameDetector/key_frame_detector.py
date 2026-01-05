@@ -23,6 +23,7 @@ def keyframe_detect(source, dest, thresh, max_keyframes=8, show_metrics=False, v
     cap = cv2.VideoCapture(source)
     length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     fps = int(cap.get(cv2.CAP_PROP_FPS))
+    duration_ms = round(length / fps, 3) * 1000
     # max_sample_frame_num = 640
     max_sample_frame_num = 320
     min_sample_frame_num = 16
@@ -40,7 +41,7 @@ def keyframe_detect(source, dest, thresh, max_keyframes=8, show_metrics=False, v
     last_frame = None
     # start_time = time.process_time()
 
-    while cap.isOpened():
+    while cap.isOpened() and current_time <= duration_ms:
         cap.set(cv2.CAP_PROP_POS_MSEC, current_time)
         ret, frame = cap.read()
         if not ret:
