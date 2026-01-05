@@ -36,7 +36,7 @@ def convert_frame_to_grayscale(frame):
     grayframe = None
     gray = None
     if frame is not None:
-        cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray = scale(gray, 1, 1)
         grayframe = scale(gray, 1, 1)
@@ -52,11 +52,15 @@ def prepare_dirs(keyframePath, imageGridsPath, csvPath):
         os.makedirs(csvPath)
 
 
-def plot_metrics(indices, lstfrm, lstdiffMag):
-    y = np.array(lstdiffMag)
-    plt.plot(indices, y[indices], "x")
-    l = plt.plot(lstfrm, lstdiffMag, 'r-')
+def plot_metrics(indices, last_frames, last_diff_mag, save_path=None):
+    y = np.array(last_diff_mag)
+    plt.plot(np.array(last_frames)[indices], y[indices], "x")
+    plt.plot(last_frames, last_diff_mag, 'r-')
     plt.xlabel('frames')
     plt.ylabel('pixel difference')
     plt.title("Pixel value differences from frame to frame and the peak values")
-    plt.show()
+    if save_path:
+        plt.savefig(save_path)
+    else:
+        plt.show()
+    plt.close()
